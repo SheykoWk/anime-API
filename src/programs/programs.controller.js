@@ -21,7 +21,7 @@ const getProgramById = (id) => {
   return data;
 };
 
-const createProgram = (data, program_id) => {
+const createProgram = (data) => {
   const newProgram = {
     id: uuid.v4(),
     title: data.title,
@@ -59,3 +59,11 @@ const editProgram = (id, data) => {
   }
   return false;
 };
+
+module.exports = {
+  getAllPrograms,
+  getProgramById,
+  createProgram,
+  deleteProgram,
+  editProgram
+}
