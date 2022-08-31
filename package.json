@@ -1,7 +1,7 @@
 {
   "name": "skeleton",
   "version": "1.0.0",
-  "description": "",
+  "description": "- /api/v1/users - /api/v1/users/:id - /api/v1/users/me",
   "main": "index.js",
   "scripts": {
     "start": "node ./src/app.js",
@@ -9,7 +9,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "Luis David",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.0.1",
