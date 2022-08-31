@@ -6,6 +6,16 @@ const getAll = (req, res) => {
   res.status(200).json({ items: response.length, response });
 }
 
+const getById = (req, res) => {
+  const id = req.params.programId;
+  const response = programsControllers.getProgramById(id);
+
+  if (response.length)
+    res.status(200).json(response)
+
+  res.status(404).json({ message: `The user with id:${id}doesn't exist` })
+}
+
 const addAProgram = (req, res) => {
   const data = req.body;
 
@@ -19,7 +29,7 @@ const addAProgram = (req, res) => {
         title: 'Your title',
         description: 'Your description',
         seasons: 3,
-        cover:'example.com/img/example.png',
+        cover: 'example.com/img/example.png',
         categories: ['Accion,Comedia']
       }
     })
@@ -27,13 +37,48 @@ const addAProgram = (req, res) => {
 
   const response = programsControllers.createProgram(data);
   res.status(201).json({
-    message:`Program created succesfully with id ${response.id}`,
-    program:response
+    message: `Program created succesfully with id ${response.id}`,
+    program: response
   })
 
 }
 
+const remove = (req, res) => {
+  const id = req.params.programId;
+  const response = programsControllers.deleteProgram(id);
+
+  if (response)
+    res.status(204).json();
+
+  res.status(400).json({ message: 'Invalid Id' })
+}
+
+const edit =(req,res)=>{
+  const id =req.params.programId;
+  const data = req.body;
+
+  if (!Object.keys(data).length)
+    res.status(400).json({ message: 'Missing data' });
+
+  const response =programsControllers.editProgram(id,data);
+
+  if(response){
+    res.status(200).json({
+      message:'User edited succesfully',
+      response
+    })
+  }
+
+  res.status(400).json({
+    message:'Invalid Id'
+  })
+    
+}
+
 module.exports = {
   getAll,
-  addAProgram
+  addAProgram,
+  getById,
+  remove,
+  edit
 }

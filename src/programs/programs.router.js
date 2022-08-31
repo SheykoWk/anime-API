@@ -7,4 +7,10 @@ router.route('/')
   .get(programsServices.getAll)
   .post(programsServices.addAProgram)
 
+
+router.route('/:programId')
+  .get(programsServices.getById)
+  .delete(programsServices.remove)
+  .put(programsServices.edit)
+
 exports.router = router;
