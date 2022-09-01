@@ -47,8 +47,12 @@ const editChapter = (id, data) => {
   return false
 };
 
-
-
-
+module.exports = {
+  getChaptersByProgram,
+  getChapterById,
+  createChapter,
+  deleteChapter,
+  editChapter
+}
 
 
