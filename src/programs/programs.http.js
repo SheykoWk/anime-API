@@ -2,22 +2,25 @@ const programsControllers = require("./programs.controller");
 
 const getAll = (req, res) => {
   const data = programsControllers.getAllPrograms();
-  res.status(200).json({ count: data.length, programs: data });
+  return res.status(200).json({ count: data.length, programs: data });
 };
 
 const getById = (req, res) => {
   const programID = req.params.program_id;
   const data = programsControllers.getProgramById(programID);
   if (!data.length) {
-    res.status(404).json({ message: "Not found this anime" });
+    return res.status(404).json({ message: "Not found this anime" });
   } else {
-    res.status(200).json(data[0]);
+    return res.status(200).json(data[0]);
   }
 };
 
 const create = (req, res) => {
-  const data = req.body;
-  if (!data) {
+    const cover = req.hostname + ':8000' + '/api/v1/uploads/media/covers/' + req.file.filename 
+    const data = req.body;
+    data.cover = cover;
+    
+    if (!data) {
     return res.status(400).json({ message: "Missing Data" });
   } else if (
     !data.title ||
@@ -33,32 +36,42 @@ const create = (req, res) => {
         description: "string",
         seasons: "number",
         cover: "img",
-        categories: "['love', 'death', 'robots']",
+        categories: ['love', 'death', 'robots'],
       },
     });
   } else {
+    data.categories = JSON.parse(data.categories)
+    data.seasons = JSON.parse(data.seasons)
     const response = programsControllers.createProgram(data);
     return res.status(201).json({
-      message: `Prgram created succesfully with id: ${response.id}`,
+      message: `Program created succesfully with id: ${response.id}`,
       program: response,
     });
   }
 };
 
-const remove = (req, res) => {
+const remove = async (req, res) => {
   const id = req.params.program_id;
-  const response = programsControllers.deleteProgram(id);
+  const response = await programsControllers.deleteProgram(id);
 
-  if (response) {
+  if (response === "Not Found") {
+    return res.status(404).json({
+      message: "File not found in directory",
+    });
+  } else if(response) {
     return res.status(204).json();
   } else {
-    return res.staus(400).json({ message: `Invalid program ID` });
+    return res.status(404).json({
+      message: "Invalid program Id",
+    });
   }
 };
 
-const edit = (req, res) => {
-  const id = req.params.id;
+const edit = async (req, res) => {
+  const cover = req.hostname + ':8000' + '/api/v1/uploads/media/covers/' + req.file.filename 
+  const id = req.params.program_id;
   const data = req.body;
+  data.cover = cover;
 
   if (!Object.keys(data).length) {
     return res.status(400).json({ message: "Missing Data" });
@@ -80,15 +93,21 @@ const edit = (req, res) => {
       },
     });
   } else {
-    const response = programsControllers.editProgram(id, data);
-    if (response) {
+    data.categories = JSON.parse(data.categories)
+    data.seasons = JSON.parse(data.seasons)
+    const response = await programsControllers.editProgram(id, data);
+    if (response === "Not Found") {
+      return res.status(404).json({
+        message: "File not found in directory",
+      });
+    } else if(response) {
       return res.status(200).json({
         message: "Program edited succesfully",
         user: response,
       });
     } else {
       return res.status(404).json({
-        message: "Not found program ID",
+        message: "Invalid program id",
       });
     }
   }

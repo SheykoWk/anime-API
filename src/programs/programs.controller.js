@@ -1,4 +1,5 @@
-const uuid = require('uuid')
+const uuid = require('uuid');
+const removeFile = require('../utils/removeFile.js');
 
 const programsDB = [
   {
@@ -34,16 +35,21 @@ const createProgram = (data) => {
   return newProgram;
 };
 
-const deleteProgram = (id) => {
+const deleteProgram = async (id) => {
   const index = programsDB.findIndex((program) => program.id === id);
   if (index !== -1) {
-    programsDB.slice(index, 1);
-    return true;
+    const response = await removeFile(programsDB[index].cover)
+    if(response){
+      programsDB.splice(index, 1);
+      return true;
+    }else {
+      return "Not Found";
+    }
   }
   return false;
 };
 
-const editProgram = (id, data) => {
+const editProgram = async (id, data) => {
   const index = programsDB.findIndex((program) => program.id === id);
   const editedProgram = {
     id: id,
@@ -54,8 +60,13 @@ const editProgram = (id, data) => {
     categories: data.categories ? data.categories : programsDB[index].categories,
   };
   if (index !== -1) {
-    programsDB[index] = editedProgram;
-    return programsDB[index];
+    const response = await removeFile(programsDB[index].cover)
+    if(response){
+      programsDB[index] = editedProgram;
+      return programsDB[index];
+    }else {
+      return "Not Found";
+    }
   }
   return false;
 };
@@ -65,5 +76,6 @@ module.exports = {
   getProgramById,
   createProgram,
   deleteProgram,
-  editProgram
+  editProgram,
+  programsDB
 }
