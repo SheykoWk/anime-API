@@ -1,5 +1,5 @@
 const uuid = require('uuid')
-
+const chaptersControllers = require('../chapters/chapters.controllers');
 const programsDB = [
   {
     id: "88ebed0b-8095-4190-adde-d1165ca48815",
@@ -18,7 +18,7 @@ const getAllPrograms = () => {
 
 const getProgramById = (id) => {
   const data = programsDB.filter((program) => program.id === id);
-  return data;
+  return data.length ? data[0] : false;
 };
 
 const createProgram = (data, program_id) => {
@@ -60,10 +60,43 @@ const editProgram = (id, data) => {
   return false;
 };
 
-module.exports={
+const getAllChaptersOfProgramById = (programId) => {
+  const data = getProgramById(programId);
+
+  if (data) {
+    const programId = data.id;
+    const response = chaptersControllers.getChaptersByProgram(programId);
+    data.chapters =response
+    return data;
+
+  }
+
+  return false;
+
+}
+
+const createChapterToProgramById = (programId, chapterPath) => {
+  const index = programsDB.findIndex(program => program.id === programId);
+
+  if (index !== -1) {
+    const newChapter = {
+      chapter_num: chapters.length === undefined || !chapters.length ? 1 : chapters.length + 1,
+      url: chapterPath
+    }
+
+    const response = chaptersControllers.createChapter(newChapter, programId)
+    return response;
+  }
+
+  return false;
+}
+
+module.exports = {
   getAllPrograms,
   getProgramById,
   createProgram,
   deleteProgram,
-  editProgram
+  editProgram,
+  createChapterToProgramById,
+  getAllChaptersOfProgramById
 }

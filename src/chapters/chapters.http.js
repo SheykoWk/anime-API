@@ -12,11 +12,17 @@ const getAllChaptersByProgram=(req,res)=>{
   
 }
 
-const create=(req,res)=>{
-  const programId = req.params.programId;
-  const program = programs.programsControllers(programId);
+// const create=(req,res)=>{
+//   const programId = req.params.programId;
+//   const program = programsControllers.getProgramById(programId);
 
-  if(program.length){
-    const response =chaptersControllers.createChapter();
-  }
+//   if(program.length){
+//     const data =req.body
+//     const response =chaptersControllers.createChapter(program[0].id);
+//   }
+// }
+
+module.exports={
+  getAllChaptersByProgram,
+  
 }

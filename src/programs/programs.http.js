@@ -75,10 +75,47 @@ const edit =(req,res)=>{
     
 }
 
+const getChaptersByProgramId =(req,res)=>{
+  const programId =req.params.programId;
+  const response = programsControllers.getAllChaptersOfProgramById(programId);
+  if(response)
+    return res.status(200).json(response)
+
+  //else{
+  return res.status(400).json({message:'Invalid Id'})
+
+  //}
+  
+}
+
+
+
+const addChapterToProgramById=(req,res)=>{
+  const programId =req.params.programId;
+  const data =req.body;
+
+  if (!Object.keys(data).length)
+    res.status(400).json({ message: 'Missing data' });
+  
+  if(!req.file.filename)
+    res.status(400).json({message:'You must upload a file'});
+
+  const chapterPath =req.hostname+':8000'+'/api/v1/uploads'+req.file.filename;
+  const response =programsControllers.addAChapterToProgramById(programId,chapterPath);
+
+  if(response)
+    res.status(201).json({message:`Chapter created succesfully with id:${response.id}`,response})
+  
+  res.status(400).json({message:'Invalid id'});
+
+}
+
 module.exports = {
   getAll,
   addAProgram,
   getById,
   remove,
-  edit
+  edit,
+  addChapterToProgramById,
+  getChaptersByProgramId
 }
