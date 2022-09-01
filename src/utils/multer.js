@@ -1,18 +1,28 @@
 const multer = require('multer')
 const path = require('path')
 
-const storage = multer.diskStorage({
+const coverStorage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, path.resolve('uploads/covers'))
+        cb(null, path.resolve('uploads/media/covers'))
     },
     filename: (req, file, cb) => {
         cb(null, Date.now() + '-' + file.originalname)
     }
 })
 
-const upload = multer({storage})
+const ChapterStorage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, path.resolve('uploads/media/chapters'))
+    },
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + '-' + file.originalname)
+    }
+})
 
-module.exports = { upload }
+const uploadCovers = multer({coverStorage})
+const uploadChapters = multer({ChapterStorage})
+
+module.exports = { uploadChapters, uploadCovers }
 
 
 

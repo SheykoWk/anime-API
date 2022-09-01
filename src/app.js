@@ -1,11 +1,13 @@
 //* Dependencias
 const express = require("express");
+const path = require('path')
 const passport = require("passport");
 require("./middleware/auth.middleware")(passport);
 
 //*Archivos de rutas
 const userRouter = require("./users/users.router").router;
 const authRouter = require("./auth/auth.router").router;
+const programRouter = require('./programs/programs.router').router;
 
 //* Configuraciones iniciales
 const app = express();
@@ -19,11 +21,15 @@ app.get("/", (req, res) => {
 });
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/programs", programRouter);
 
-app.listen(8000, () => {
+app.get('/api/v1/uploads/:videoName', (req, res) =>{
+  const videoName = req.params.videoName;
+  res.status(200).sendFile(path.resolve('uploads/') +'/'+ `${videoName}`)
+})
+
+app.listen(3000, () => {
   console.log("Server started at port 8000");
 });
 
 exports.default = app
-exports.app = app
-module.exports = app

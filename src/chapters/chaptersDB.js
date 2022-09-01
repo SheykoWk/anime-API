@@ -76,6 +76,12 @@ const chaptersDB = [
       chapter_num: 13,
       url: "localhost:8000/uploads/anime/chapters/bnha-1-13.mp4"
     },
+    {
+      "id": "e08fa39c-5369-44b3-aed3-50ff055a213f",
+      "program_id": "24ae42c8-586c-4d66-b195-b27c5542ba5e",
+      "chapter_num": 1,
+      "url": "prueba1"
+    }
   ];
 
 module.exports = chaptersDB

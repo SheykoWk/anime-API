@@ -8,8 +8,28 @@ const programsDB = [
       "Las personas no nacen igual. El protagonista de esta historia es uno de esos casos raros que nacen sin superpoderes, pero esto no le impedirá perseguir su sueño: ser un gran héroe como el legendario All-Might. Para convertirse en el héroe que quiere ser, se apuntará a una de las academias de héroes más prestigiosas del país: Yueiko. Con la ayuda de su ídolo, All-Might, ¿podrá convertirse en un verdadero héroe?",
     seasons: 4,
     cover: "localhost:8000/uploads/animes/bnha-cover.jpg",
-    categories: ["Accion", "Comedia", "Escolares", "Shounen", "Superpoderes"],
+    categories: [
+      "Accion",
+      "Comedia",
+      "Escolares",
+      "Shounen",
+      "Superpoderes"
+    ]
   },
+  {
+    "id": "24ae42c8-586c-4d66-b195-b27c5542ba5e",
+    "title": "Jujutsu Kaisen",
+    "description": "Las personas no nacen igual. El protagonista de esta historia es uno de esos casos raros que nacen sin superpoderes, pero esto no le impedirá perseguir su sueño: ser un gran héroe como el legendario All-Might. Para convertirse en el héroe que quiere ser, se apuntará a una de las academias de héroes más prestigiosas del país: Yueiko. Con la ayuda de su ídolo, All-Might, ¿podrá convertirse en un verdadero héroe?",
+    "seasons": 1,
+    "cover": "localhost:8000/uploads/animes/bnha-cover.jpg",
+    "categories": [
+      "Accion",
+      "Comedia",
+      "Shounen",
+      "Superpoderes",
+      "Magia"
+    ]
+  }
 ];
 
 const getAllPrograms = () => {
@@ -21,7 +41,7 @@ const getProgramById = (id) => {
   return data;
 };
 
-const createProgram = (data, program_id) => {
+const createProgram = (data) => {
   const newProgram = {
     id: uuid.v4(),
     title: data.title,
@@ -37,10 +57,12 @@ const createProgram = (data, program_id) => {
 const deleteProgram = (id) => {
   const index = programsDB.findIndex((program) => program.id === id);
   if (index !== -1) {
-    programsDB.slice(index, 1);
+    programsDB.splice(index, 1);
     return true;
+  }else{
+    return false;
   }
-  return false;
+  
 };
 
 const editProgram = (id, data) => {
@@ -59,3 +81,13 @@ const editProgram = (id, data) => {
   }
   return false;
 };
+
+
+module.exports = {
+  getAllPrograms,
+  getProgramById,
+  editProgram,
+  createProgram,
+  deleteProgram,
+  programsDB
+}
