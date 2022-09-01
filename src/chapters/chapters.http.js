@@ -30,7 +30,7 @@ const getById = (req, res) => {
 };
 
 const create = (req, res) => {
-  const url = req.hostname + ":8000" + "/api/v1/uploads/media/chapters/" +
+  const url = req.hostname + ":8000" + "/uploads/media/chapters/" +
     req.file.filename;
   const programID = req.params.program_id
   const data = req.body;
@@ -41,7 +41,8 @@ const create = (req, res) => {
     return res.status(400).json({
       message: "All fields must be completed",
       fields: {
-        chapter_num: "number"
+        chapter_num: "number",
+        chapter: "video"
       },
     });
   } else if (!programsControllers.getProgramById(programID).length) {
@@ -75,7 +76,7 @@ const remove = async (req, res) => {
 };
 
 const edit = async (req, res) => {
-  const url = req.hostname + ':8000' + '/api/v1/uploads/media/chapters/' + req.file.filename 
+  const url = req.hostname + ':8000' + '/uploads/media/chapters/' + req.file.filename 
   const programID = req.params.program_id;
   const chapterID = req.params.chapter_id;
   const data = req.body;

@@ -16,7 +16,7 @@ const getById = (req, res) => {
 };
 
 const create = (req, res) => {
-    const cover = req.hostname + ':8000' + '/api/v1/uploads/media/covers/' + req.file.filename 
+    const cover = req.hostname + ':8000' + '/uploads/media/covers/' + req.file.filename 
     const data = req.body;
     data.cover = cover;
     
@@ -68,7 +68,7 @@ const remove = async (req, res) => {
 };
 
 const edit = async (req, res) => {
-  const cover = req.hostname + ':8000' + '/api/v1/uploads/media/covers/' + req.file.filename 
+  const cover = req.hostname + ':8000' + '/uploads/media/covers/' + req.file.filename 
   const id = req.params.program_id;
   const data = req.body;
   data.cover = cover;

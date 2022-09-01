@@ -42,7 +42,7 @@ const editChapter = async (program_id, chapter_id, data) => {
   const index = chaptersDB.findIndex((chapter) => chapter.id === chapter_id && chapter.program_id === program_id);
   const editedChapter = {
     id: chapter_id,
-    program_id: data.program_id ? data.program_id : chaptersDB[index].program_id,
+    program_id: program_id,
     chapter_num: data.chapter_num ? data.chapter_num : chaptersDB[index].chapter_num,
     url: data.url ? data.url : chaptersDB[index].url,
   };
