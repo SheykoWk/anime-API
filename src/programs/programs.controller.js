@@ -17,45 +17,55 @@ const getAllPrograms = () => {
 };
 
 const getProgramById = (id) => {
-  const data = programsDB.filter((program) => program.id === id);
-  return data;
+  const data = programsDB.find((program) => program.id === id);
+
+  if (!data) throw { message: "Program didn't found", status: 404 };
+
+  return data
 };
 
-const createProgram = (data, program_id) => {
-  const newProgram = {
-    id: uuid.v4(),
-    title: data.title,
-    description: data.description,
-    seasons: data.seasons,
-    cover: data.cover,
-    categories: data.categories,
-  };
+const createProgram = (data) => {
+  const { title, description, seasons, cover, categories } = data;
+
+  const newProgram = { id: uuid.v4(), title, description, seasons, cover, categories };
+  
   programsDB.push(newProgram);
   return newProgram;
 };
 
 const deleteProgram = (id) => {
   const index = programsDB.findIndex((program) => program.id === id);
-  if (index !== -1) {
-    programsDB.slice(index, 1);
-    return true;
-  }
-  return false;
+
+  if (index === -1) throw { message: "Program didn't found", status: 404 };
+
+  programsDB.splice(index, 1);
+  return true;
 };
 
 const editProgram = (id, data) => {
   const index = programsDB.findIndex((program) => program.id === id);
+
+  if (index === -1) throw { message: "Program didn't found", status: 404 };
+
+  const { title, description, seasons, cover, categories } = data;
+
   const editedProgram = {
     id: id,
-    title: data.title ? data.title : programsDB[index].title,
-    description: data.description ? data.description : programsDB[index].description,
-    seasons: data.seasons ? data.seasons : programsDB[index].seasons,
-    cover: data.cover ? data.cover : programsDB[index].cover,
-    categories: data.categories ? data.categories : programsDB[index].categories,
+    title: title || programsDB[index].title,
+    description: description || programsDB[index].description,
+    seasons: seasons || programsDB[index].seasons,
+    cover: cover || programsDB[index].cover,
+    categories: categories || programsDB[index].categories,
   };
-  if (index !== -1) {
-    programsDB[index] = editedProgram;
-    return programsDB[index];
-  }
-  return false;
+
+  programsDB[index] = editedProgram;
+  return programsDB[index];
 };
+
+module.exports = {
+  getAllPrograms,
+  getProgramById,
+  createProgram,
+  deleteProgram,
+  editProgram
+}
