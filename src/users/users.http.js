@@ -189,7 +189,30 @@ const postProfileImg = (req, res) => {
   //mi-sitio.com/api/v1/users/me/profile-img
   //localhost:8000/api/v1/users/me/profile-img
 
-  const imgPath = req.hostname + ':8000' + '/api/v1/uploads/' + req.file.filename 
+  const imgPath = req.hostname + ':8000' + '/api/v1/uploads/covers/' + req.file.filename 
+
+  const data = userControllers.editProfileImg(userId, imgPath)
+  res.status(200).json(data)
+
+}
+const postProfileImg2 = (req, res) => {
+  const userId = req.user.id;
+  //mi-sitio.com/api/v1/users/me/profile-img
+  //localhost:8000/api/v1/users/me/profile-img
+
+  const imgPath = req.hostname + ':8000' + '/api/v1/uploads/chapters/' + req.file.filename 
+
+  const data = userControllers.editProfileImg(userId, imgPath)
+  res.status(200).json(data)
+
+}
+
+const postChapter = (req, res) => {
+  const userId = req.user.id;
+  //mi-sitio.com/api/v1/users/me/profile-img
+  //localhost:8000/api/v1/users/me/profile-img
+
+  const imgPath = req.hostname + ':8000' + '/api/v1/uploads/chapters/' + req.file.filename 
 
   const data = userControllers.editProfileImg(userId, imgPath)
   res.status(200).json(data)
@@ -206,5 +229,7 @@ module.exports = {
   editMyUser,
   getMyUser,
   removeMyUser,
-  postProfileImg
+  postProfileImg,
+  postChapter,
+  postProfileImg2
 };

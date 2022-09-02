@@ -2,13 +2,17 @@ const uuid = require("uuid");
 
 const chaptersDB = require("./chaptersDB");
 
+
 const getChaptersByProgram = (programID) => {
-  const data = chaptersDB.filter((chapter) => chapter.program_id === programID);
+  //const data = chaptersDB.filter((chapter) => chapter.program_id == programID);
+  const data = chaptersDB.filter(e => e.program_id == programID)
   return data;
 };
 
+
+
 const getChapterById = (id) => {
-  const data = chaptersDB.filter((chapter) => chapter.id === id);
+  const data = chaptersDB.filter((chapter) => chapter.id == id);
   return data;
 };
 
@@ -26,7 +30,7 @@ const createChapter = (data, program_id) => {
 const deleteChapter = (id) => {
   const index = chaptersDB.findIndex((chapter) => chapter.id === id);
   if (index !== -1) {
-    chaptersDB.slice(index, 1);
+    chaptersDB.splice(index, 1);
     return true;
   }
   return false;
@@ -48,7 +52,13 @@ const editChapter = (id, data) => {
 };
 
 
-
+module.exports = {
+  createChapter,
+  deleteChapter,
+  editChapter,
+  getChapterById,
+  getChaptersByProgram
+}
 
 
 
