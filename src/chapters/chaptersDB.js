@@ -76,6 +76,18 @@ const chaptersDB = [
       chapter_num: 13,
       url: "localhost:8000/uploads/anime/chapters/bnha-1-13.mp4"
     },
+    {
+      id: "ad27f649-a255-47a2-b376-19b7d231a4ac",
+      program_id: "2",
+      chapter_num: 1,
+      url: "one piece"
+    },
+    {
+      id: "2222",
+      program_id: "2",
+      chapter_num: 2,
+      url: "one piece.capu.com"
+    }
   ];
 
 module.exports = chaptersDB
