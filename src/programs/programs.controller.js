@@ -1,4 +1,4 @@
-const uuid = require('uuid')
+const uuid = require("uuid");
 
 const programsDB = [
   {
@@ -18,10 +18,13 @@ const getAllPrograms = () => {
 
 const getProgramById = (id) => {
   const data = programsDB.filter((program) => program.id === id);
-  return data;
+  if (data.length === 0) {
+    return false;
+  }
+  return data[0];
 };
 
-const createProgram = (data, program_id) => {
+const createProgram = (data) => {
   const newProgram = {
     id: uuid.v4(),
     title: data.title,
@@ -37,25 +40,37 @@ const createProgram = (data, program_id) => {
 const deleteProgram = (id) => {
   const index = programsDB.findIndex((program) => program.id === id);
   if (index !== -1) {
-    programsDB.slice(index, 1);
+    programsDB.splice(index, 1);
     return true;
   }
   return false;
 };
 
-const editProgram = (id, data) => {
+const editProgram = (id, data, url) => {
   const index = programsDB.findIndex((program) => program.id === id);
   const editedProgram = {
     id: id,
     title: data.title ? data.title : programsDB[index].title,
-    description: data.description ? data.description : programsDB[index].description,
+    description: data.description
+      ? data.description
+      : programsDB[index].description,
     seasons: data.seasons ? data.seasons : programsDB[index].seasons,
-    cover: data.cover ? data.cover : programsDB[index].cover,
-    categories: data.categories ? data.categories : programsDB[index].categories,
+    cover: url ? url : programsDB[index].cover,
+    categories: data.categories
+      ? data.categories
+      : programsDB[index].categories,
   };
   if (index !== -1) {
     programsDB[index] = editedProgram;
     return programsDB[index];
   }
   return false;
+};
+
+module.exports = {
+  getAllPrograms,
+  getProgramById,
+  createProgram,
+  deleteProgram,
+  editProgram,
 };
