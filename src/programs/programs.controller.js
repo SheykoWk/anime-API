@@ -21,13 +21,13 @@ const getProgramById = (id) => {
   return data;
 };
 
-const createProgram = (data, program_id) => {
+const createProgram = (data, urlCover) => {
   const newProgram = {
     id: uuid.v4(),
     title: data.title,
     description: data.description,
     seasons: data.seasons,
-    cover: data.cover,
+    cover: urlCover,
     categories: data.categories,
   };
   programsDB.push(newProgram);
@@ -37,7 +37,7 @@ const createProgram = (data, program_id) => {
 const deleteProgram = (id) => {
   const index = programsDB.findIndex((program) => program.id === id);
   if (index !== -1) {
-    programsDB.slice(index, 1);
+    programsDB.splice(index, 1);
     return true;
   }
   return false;
@@ -59,3 +59,12 @@ const editProgram = (id, data) => {
   }
   return false;
 };
+
+module.exports = {
+  getAllPrograms,
+  getProgramById,
+  createProgram,
+  deleteProgram,
+  editProgram,
+  programsDB
+}

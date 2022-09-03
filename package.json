@@ -1,7 +1,7 @@
 {
   "name": "skeleton",
   "version": "1.0.0",
-  "description": "",
+  "description": "- /api/v1/users\r - /api/v1/users/:id\r - /api/v1/users/me",
   "main": "index.js",
   "scripts": {
     "start": "node ./src/app.js",
@@ -29,5 +29,13 @@
     "chai-http": "^4.3.0",
     "mocha": "^10.0.0",
     "nodemon": "^2.0.19"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ExequielMaydana/anime-API.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ExequielMaydana/anime-API/issues"
+  },
+  "homepage": "https://github.com/ExequielMaydana/anime-API#readme"
 }
