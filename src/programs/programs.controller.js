@@ -21,13 +21,13 @@ const getProgramById = (id) => {
   return data;
 };
 
-const createProgram = (data, program_id) => {
+const createProgram = (data, urlCover) => {
   const newProgram = {
     id: uuid.v4(),
     title: data.title,
     description: data.description,
     seasons: data.seasons,
-    cover: data.cover,
+    cover: urlCover,
     categories: data.categories,
   };
   programsDB.push(newProgram);

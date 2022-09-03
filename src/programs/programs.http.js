@@ -22,12 +22,14 @@ const getProgmsById = (req, res) => {
 // servicio para crear un programa.
 const createProgms = (req, res) => {
   const data = req.body;
-  if (!data) {
+  const file = req.file;
+  if (!data && !file) {
     return res.status(400).json({ message: "Missing data" });
   } else if (
     !data.title ||
     !data.description ||
     !data.seasons ||
+    !file ||
     !data.categories
   ) {
     return res.status(400).json({
@@ -36,11 +38,14 @@ const createProgms = (req, res) => {
         title: "string",
         description: "string",
         seasons: "int",
-        categories: "string",
+        cover: "archivo.png",
+        categories: "string"
       },
     });
   } else {
-    const response = programControllers.createProgram(data);
+    
+    const urlCover = `http://${req.hostname}:8000/uploads/animes/${req.file.filename}`
+    const response = programControllers.createProgram(data, urlCover);
     return res.status(201).json(response);
   }
 };
@@ -95,12 +100,16 @@ const editProgms = (req, res) => {
   }
 };
 
-const postImgCover = (req, res) => {
-  const id = req.programs.id;
-  const imgPath = req.hostname + ":8000" + "/uploads/media/covers" + req.file.filename;
-  const data = programControllers.imgCoverProgms(id, imgPath);
-  res.status(200).json(data);
-};
+// const postImgCover = (req, res) => {
+//   const id = req.params.program_id;
+//   const imgPath = req.hostname + ":8000" + "/uploads/covers" + req.file.filename;
+//   const data = programControllers.imgCover(id, imgPath)
+//   if(data){
+//     return res.status(200).json(data);
+//   }else{
+//     return res.status(400).json({message: 'The action could not be completed successfully'})
+//   }
+// };
 
 
 module.exports = {
@@ -109,5 +118,4 @@ module.exports = {
   createProgms,
   editProgms,
   deleteProgms,
-  postImgCover,
 };

@@ -24,11 +24,14 @@ const getChapById = (req, res) => {
 const createChap = (req, res) => {
     const data = req.body;
     const progmsId = req.params.program_id;
-    if(!data){
+    const file = req.file;
+
+    if(!data && !file){
         return res.status(400).json({message: 'Missing Data'})
     }else{
-        const response = chaptControllers.createChapter(data, progmsId)
-        return res.status(201).json(response)
+        const urlMp = `http://${req.hostname}:8000/uploads/anime/chapters/${req.file.filename}`
+        const response = chaptControllers.createChapter(data, progmsId, urlMp);
+        return res.status(201).json(response);
     }
 }
 
@@ -66,18 +69,10 @@ const putChap = (req, res) => {
     }
 }
 
-const postMpChap = (req, res) => {
-    const id = req.params.chapter_id;
-    const urlPath = req.hostname + '8000' + '/uploads/media/chapters' + req.file.filename;
-    const data = chaptControllers.mpChapters(id, urlPath)
-    return res.status(200).json(data)
-}
-
 module.exports = {
     getChapByProg,
     getChapById,
     createChap,
     deleteChap,
     putChap,
-    postMpChap
 }

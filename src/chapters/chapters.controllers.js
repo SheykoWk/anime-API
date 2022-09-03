@@ -18,12 +18,12 @@ const getChapterById = (id) => {
   return data;
 };
 
-const createChapter = (data, program_id) => {
+const createChapter = (data, program_id, urlMp) => {
   const newChapter = {
     id: uuid.v4(),
     program_id,
     chapter_num: data.chapter_num,
-    url: data.url,
+    url: urlMp,
   };
   chaptersDB.push(newChapter);
   return newChapter;
