@@ -38,16 +38,16 @@ const getAllPrograms = () => {
 
 const getProgramById = (id) => {
   const data = programsDB.filter((program) => program.id === id);
-  return data;
+  return data.length ? data[0] : null;
 };
 
-const createProgram = (data) => {
+const createProgram = (data, cover) => {
   const newProgram = {
     id: uuid.v4(),
     title: data.title,
     description: data.description,
     seasons: data.seasons,
-    cover: data.cover,
+    cover: cover,
     categories: data.categories,
   };
   programsDB.push(newProgram);

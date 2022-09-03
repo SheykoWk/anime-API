@@ -1,11 +1,14 @@
 
 const chaptersControllers = require('./chapters.controllers')
+const programsControllers = require('../programs/programs.controller')
 
 const getChaptersByProgram = (req, res) => {
     const id = req.params.programs_id
-    const data = chaptersControllers.getChaptersByProgram(id,id)
+    
+    const data = programsControllers.getProgramById(id)
     if (data) {
-        res.status(202).json(data)
+        const chapters = chaptersControllers.getChaptersByProgram(id)
+        res.status(202).json({...data,chapters})
     } else {
         res.status(400).json({ message: `El programa con el id ${id} no existe` })
     }
@@ -14,6 +17,7 @@ const getChaptersByProgram = (req, res) => {
 
 const getChapterById = (req, res) => {
     const id = req.params.chapters_id
+    const videoPath = req.params.video
     const data = chaptersControllers.getChapterById(id)
     if (data) {
         res.status(202).json({ items: data.length, chapters: data })
@@ -28,20 +32,23 @@ const register = (req, res) => {
     if (!data) {
         return res.status(400).json({ message: "Missing Data" });
     } else if (
-        !data.program_id ||
+        
         !data.chapter_num ||
-        !data.url
+        !req.file
     ) {
         return res.status(400).json({
             message: "All fields must be completed",
             fields: {
                 program_id: "string",
                 chapter_num: "string",
-                url: "localhost:jgdjshdjshdhsdj"
+                
             }
         });
     } else {
-        const response = chaptersControllers.createChapter(data, id);
+        const videoUrl = `http://${req.hostname}:3000/uploads/anime/chapters/${req.file.filename}`
+        const response = chaptersControllers.createChapter(data, id,videoUrl);
+        
+        
         return res.status(201).json({
             message: `chapter created succesfully with id: ${response.id}`,
             chapter: response
@@ -93,7 +100,7 @@ const remove = (req, res) =>{
 const chaptersVideo = (req, res) => {
     const id = req.params.chapters_id;
     const videoPath = req.hostname + ':3000' + 'api/v1/uploads/' +req.file.filename
-    const data = userControllers.editProfileImg(id, videoPath)
+    const data = chaptersControllers.createEpisodes(id, videoPath)
     res.status(200).json(data)
 }
 

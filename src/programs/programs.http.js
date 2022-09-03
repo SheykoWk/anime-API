@@ -1,4 +1,4 @@
-const { edit } = require('../users/users.http');
+
 const programsControllers = require('./programs.controller')
 
 const getAll = (req, res) => {
@@ -24,7 +24,7 @@ const register = (req, res) => {
     !data.title ||
     !data.description ||
     !data.seasons ||
-    !data.cover ||
+    !req.file ||
     !data.categories 
   ) { 
     return res.status(400).json({
@@ -42,7 +42,8 @@ const register = (req, res) => {
       },
     });
   } else {
-    const response = programsControllers.createProgram(data);
+    const coverUrl = `http://${req.hostname}:3000/uploads/anime/programs/${req.file.filename}`
+    const response = programsControllers.createProgram(data,coverUrl);
     return res.status(201).json({
         message: `Programs created succesfully with id: ${response.id}`,
         programs: response
