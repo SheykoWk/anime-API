@@ -63,6 +63,17 @@ const editProgram = (id, data) => {
   
 };
 
+const updateCoverProgram=(programId,url)=>{
+  const index =programsDB.findIndex(program=>program.id ===programId);
+  
+  if(index !==-1){
+    programsDB[index].cover =url;
+    return programsDB[index];
+  }
+  return false;
+  
+}
+
 const getAllChaptersOfProgramById = (programId) => {
   const data = getProgramById(programId);
 
@@ -110,6 +121,7 @@ module.exports = {
   createProgram,
   deleteProgram,
   editProgram,
+  updateCoverProgram,
   createChapterToProgramById,
   getAllChaptersOfProgramById
 }

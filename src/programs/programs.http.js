@@ -57,7 +57,7 @@ const edit = (req, res) => {
   const id = req.params.programId;
   const data = req.body;
 
-  if (!Object.keys(data).length){
+  if (!Object.keys(data).length) {
     return res.status(400).json({ message: 'Missing data' });
 
   }
@@ -86,6 +86,19 @@ const edit = (req, res) => {
   return res.status(400).json({
     message: 'Invalid Id'
   })
+
+}
+
+const uploadCoverProgam = (req, res) => {
+  const programId = req.params.programId;
+  const coverPath = req.hostname + ':8000' + '/api/v1/media/covers/' + req.file.originalname;
+
+  const response = programsControllers.updateCoverProgram(programId, coverPath);
+
+  if (!response)
+    return res.status(404).json({ message: `The program with id ${programId} doesn't exist` });
+
+  return res.status(200).json({ message: `The program with id: ${programId} was succesfully edited` })
 
 }
 
@@ -154,7 +167,6 @@ const editAChapterByProgramId = (req, res) => {
   const chapterId = req.params.chapterId;
   const program = programsControllers.getProgramById(programId);
   const data = req.body;
-
   if (!program)
     return res.status(404).json({ message: `The program with id:${programId} doesn't exist` });
 
@@ -175,6 +187,7 @@ module.exports = {
   getById,
   remove,
   edit,
+  uploadCoverProgam,
   addChapterToProgramById,
   getChaptersByProgramId,
   getAChapterByProgram,
