@@ -6,6 +6,7 @@ require("./middleware/auth.middleware")(passport);
 //*Archivos de rutas
 const userRouter = require("./users/users.router").router;
 const authRouter = require("./auth/auth.router").router;
+const programsRouter = require('./programs/programs.router').router;
 
 //* Configuraciones iniciales
 const app = express();
@@ -19,6 +20,7 @@ app.get("/", (req, res) => {
 });
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/programs", programsRouter);
 
 app.listen(8000, () => {
   console.log("Server started at port 8000");

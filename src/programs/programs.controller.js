@@ -1,5 +1,5 @@
 const uuid = require('uuid')
-
+const chaptersControllers = require('../chapters/chapters.controllers');
 const programsDB = [
   {
     id: "88ebed0b-8095-4190-adde-d1165ca48815",
@@ -18,16 +18,16 @@ const getAllPrograms = () => {
 
 const getProgramById = (id) => {
   const data = programsDB.filter((program) => program.id === id);
-  return data;
+  return data.length ? data[0] : false;
 };
 
-const createProgram = (data, program_id) => {
+const createProgram = (data) => {
   const newProgram = {
     id: uuid.v4(),
     title: data.title,
     description: data.description,
     seasons: data.seasons,
-    cover: data.cover,
+    cover: data.cover_program ?data.cover_program:'',
     categories: data.categories,
   };
   programsDB.push(newProgram);
@@ -37,7 +37,7 @@ const createProgram = (data, program_id) => {
 const deleteProgram = (id) => {
   const index = programsDB.findIndex((program) => program.id === id);
   if (index !== -1) {
-    programsDB.slice(index, 1);
+    programsDB.splice(index, 1);
     return true;
   }
   return false;
@@ -45,17 +45,83 @@ const deleteProgram = (id) => {
 
 const editProgram = (id, data) => {
   const index = programsDB.findIndex((program) => program.id === id);
-  const editedProgram = {
-    id: id,
-    title: data.title ? data.title : programsDB[index].title,
-    description: data.description ? data.description : programsDB[index].description,
-    seasons: data.seasons ? data.seasons : programsDB[index].seasons,
-    cover: data.cover ? data.cover : programsDB[index].cover,
-    categories: data.categories ? data.categories : programsDB[index].categories,
-  };
+  
   if (index !== -1) {
+    const editedProgram = {
+      id: id,
+      title: data.title ? data.title : programsDB[index].title,
+      description: data.description ? data.description : programsDB[index].description,
+      seasons: data.seasons ? data.seasons : programsDB[index].seasons,
+      cover: data.cover ? data.cover : '',
+      categories: data.categories ? data.categories : programsDB[index].categories,
+    };
     programsDB[index] = editedProgram;
+    return programsDB[index];
+  }else{
+    return createProgram(data)
+  }
+  
+};
+
+const updateCoverProgram=(programId,url)=>{
+  const index =programsDB.findIndex(program=>program.id ===programId);
+  
+  if(index !==-1){
+    programsDB[index].cover =url;
     return programsDB[index];
   }
   return false;
-};
+  
+}
+
+const getAllChaptersOfProgramById = (programId) => {
+  const data = getProgramById(programId);
+
+  if (data) {
+    const programId = data.id;
+    const response = chaptersControllers.getChaptersByProgram(programId);
+    data.chapters =response
+    return data;
+
+  }
+
+  return false;
+
+}
+
+const createChapterToProgramById = (programId, chapterPath) => {
+  const index = programsDB.findIndex(program => program.id === programId);
+  if (index !== -1) {
+    let chaptersLength = chaptersControllers.getChaptersByProgram(programId);
+    chaptersLength =chaptersLength.length;
+    
+    const newChapter = {
+      chapter_num: chaptersLength+1,
+      url: chapterPath
+    }
+
+    const response = chaptersControllers.createChapter(newChapter, programId)
+    return response;
+  }
+
+  return false;
+}
+
+//Specific chapter
+const getAChapterByIdWhitProgramId=(chapterId)=>{
+  const response = chaptersControllers.getChapterById(chapterId);
+  
+  return response.length? response[0]:false;
+}
+
+
+module.exports = {
+  getAllPrograms,
+  getProgramById,
+  createProgram,
+  deleteProgram,
+  editProgram,
+  updateCoverProgram,
+  createChapterToProgramById,
+  getAllChaptersOfProgramById
+}
