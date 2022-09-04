@@ -1,4 +1,5 @@
 const programsControllers = require('./programs.controller');
+const chaptersControllers = require('../chapters/chapters.controllers');
 
 const getAll = (req, res) => {
   const response = programsControllers.getAllPrograms();
@@ -10,10 +11,10 @@ const getById = (req, res) => {
   const id = req.params.programId;
   const response = programsControllers.getProgramById(id);
 
-  if (response.length)
-    res.status(200).json(response)
+  if (response)
+    return res.status(200).json(response)
 
-  res.status(404).json({ message: `The user with id:${id}doesn't exist` })
+  return res.status(404).json({ message: `The user with id:${id} doesn't exist` })
 }
 
 const addAProgram = (req, res) => {
@@ -22,14 +23,13 @@ const addAProgram = (req, res) => {
   if (!Object.keys(data).length)
     res.status(400).json({ message: 'Missing data' });
 
-  if (!data.title || !data.description || !data.seasons || !data.cover || !data.categories) {
+  if (!data.title || !data.description || !data.seasons || !data.categories) {
     res.status(400).json({
       message: 'You must have at least these fields',
       fields: {
         title: 'Your title',
         description: 'Your description',
         seasons: 3,
-        cover: 'example.com/img/example.png',
         categories: ['Accion,Comedia']
       }
     })
@@ -48,66 +48,125 @@ const remove = (req, res) => {
   const response = programsControllers.deleteProgram(id);
 
   if (response)
-    res.status(204).json();
+    return res.status(204).json();
 
-  res.status(400).json({ message: 'Invalid Id' })
+  return res.status(400).json({ message: 'Invalid Id' })
 }
 
-const edit =(req,res)=>{
-  const id =req.params.programId;
+const edit = (req, res) => {
+  const id = req.params.programId;
   const data = req.body;
 
-  if (!Object.keys(data).length)
-    res.status(400).json({ message: 'Missing data' });
+  if (!Object.keys(data).length){
+    return res.status(400).json({ message: 'Missing data' });
 
-  const response =programsControllers.editProgram(id,data);
+  }
 
-  if(response){
-    res.status(200).json({
-      message:'User edited succesfully',
+  if (!data.title || !data.description || !data.seasons || !data.categories) {
+    return res.status(400).json({
+      message: 'You must have at least these fields',
+      fields: {
+        title: 'Your title',
+        description: 'Your description',
+        seasons: 3,
+        categories: ['Accion,Comedia']
+      }
+    })
+  }
+
+  const response = programsControllers.editProgram(id, data);
+
+  if (response) {
+    return res.status(200).json({
+      message: 'Program edited succesfully',
       response
     })
   }
 
-  res.status(400).json({
-    message:'Invalid Id'
+  return res.status(400).json({
+    message: 'Invalid Id'
   })
-    
+
 }
 
-const getChaptersByProgramId =(req,res)=>{
-  const programId =req.params.programId;
+const getChaptersByProgramId = (req, res) => {
+  const programId = req.params.programId;
   const response = programsControllers.getAllChaptersOfProgramById(programId);
-  if(response)
+  if (response)
     return res.status(200).json(response)
 
-  //else{
-  return res.status(400).json({message:'Invalid Id'})
+  return res.status(400).json({ message: 'Invalid Id' })
 
-  //}
-  
 }
 
+const addChapterToProgramById = (req, res) => {
+  const programId = req.params.programId;
+  const data = req.body;
 
+  console.log(req.file);
 
-const addChapterToProgramById=(req,res)=>{
-  const programId =req.params.programId;
-  const data =req.body;
+  const chapterPath = req.hostname + ':8000' + '/api/v1/media/chapters/' + req.file.originalname;
+  const response = programsControllers.createChapterToProgramById(programId, chapterPath);
 
-  if (!Object.keys(data).length)
-    res.status(400).json({ message: 'Missing data' });
-  
-  if(!req.file.filename)
-    res.status(400).json({message:'You must upload a file'});
+  if (response)
+    return res.status(201).json({ message: `Chapter created succesfully with id:${response.id}`, response })
 
-  const chapterPath =req.hostname+':8000'+'/api/v1/uploads'+req.file.filename;
-  const response =programsControllers.addAChapterToProgramById(programId,chapterPath);
+  return res.status(400).json({ message: 'Invalid id' });
 
-  if(response)
-    res.status(201).json({message:`Chapter created succesfully with id:${response.id}`,response})
-  
-  res.status(400).json({message:'Invalid id'});
+}
 
+const getAChapterByProgram = (req, res) => {
+  const programId = req.params.programId;
+  const chapterId = req.params.chapterId;
+  const program = programsControllers.getProgramById(programId);
+
+  if (!program)
+    return res.status(404).json({ message: `The program with id:${programId} doesn't exist` });
+
+  const response = chaptersControllers.getChapterById(chapterId);
+
+  if (!response)
+    return res.status(404).json({ message: `The chapter with id: ${chapterId} doesn't exist` });
+
+  return res.status(200).json(response);
+
+}
+
+const removeAChapterByProgram = (req, res) => {
+  const programId = req.params.programId;
+  const chapterId = req.params.chapterId;
+  const program = programsControllers.getProgramById(programId);
+
+  if (!program)
+    return res.status(404).json({ message: `The program with id:${programId} doesn't exist` });
+
+  const response = chaptersControllers.deleteChapter(chapterId);
+
+  if (!response)
+    return res.status(400).json({ message: `The chapter with id ${chapterId} doesn't exist` });
+
+  return res.status(204).json();
+
+}
+
+const editAChapterByProgramId = (req, res) => {
+  const programId = req.params.programId;
+  const chapterId = req.params.chapterId;
+  const program = programsControllers.getProgramById(programId);
+  const data = req.body;
+
+  if (!program)
+    return res.status(404).json({ message: `The program with id:${programId} doesn't exist` });
+
+  const chapterPath = req.hostname + ':8000' + '/api/v1/media/chapters/' + req.file.originalname;
+  data.url = chapterPath;
+
+  const response = chaptersControllers.editChapter(chapterId, data);
+
+  if (response)
+    return res.status(200).json({ message: 'Chapter edited succesfully' })
+
+  return res.status(404).json({ message: `The chapter with id ${chapterId} doesn't exist` });
 }
 
 module.exports = {
@@ -117,5 +176,8 @@ module.exports = {
   remove,
   edit,
   addChapterToProgramById,
-  getChaptersByProgramId
+  getChaptersByProgramId,
+  getAChapterByProgram,
+  removeAChapterByProgram,
+  editAChapterByProgramId
 }

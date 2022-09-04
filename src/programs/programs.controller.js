@@ -21,13 +21,13 @@ const getProgramById = (id) => {
   return data.length ? data[0] : false;
 };
 
-const createProgram = (data, program_id) => {
+const createProgram = (data) => {
   const newProgram = {
     id: uuid.v4(),
     title: data.title,
     description: data.description,
     seasons: data.seasons,
-    cover: data.cover,
+    cover: data.cover_program ?data.cover_program:'',
     categories: data.categories,
   };
   programsDB.push(newProgram);
@@ -37,7 +37,7 @@ const createProgram = (data, program_id) => {
 const deleteProgram = (id) => {
   const index = programsDB.findIndex((program) => program.id === id);
   if (index !== -1) {
-    programsDB.slice(index, 1);
+    programsDB.splice(index, 1);
     return true;
   }
   return false;
@@ -45,19 +45,22 @@ const deleteProgram = (id) => {
 
 const editProgram = (id, data) => {
   const index = programsDB.findIndex((program) => program.id === id);
-  const editedProgram = {
-    id: id,
-    title: data.title ? data.title : programsDB[index].title,
-    description: data.description ? data.description : programsDB[index].description,
-    seasons: data.seasons ? data.seasons : programsDB[index].seasons,
-    cover: data.cover ? data.cover : programsDB[index].cover,
-    categories: data.categories ? data.categories : programsDB[index].categories,
-  };
+  
   if (index !== -1) {
+    const editedProgram = {
+      id: id,
+      title: data.title ? data.title : programsDB[index].title,
+      description: data.description ? data.description : programsDB[index].description,
+      seasons: data.seasons ? data.seasons : programsDB[index].seasons,
+      cover: data.cover ? data.cover : '',
+      categories: data.categories ? data.categories : programsDB[index].categories,
+    };
     programsDB[index] = editedProgram;
     return programsDB[index];
+  }else{
+    return createProgram(data)
   }
-  return false;
+  
 };
 
 const getAllChaptersOfProgramById = (programId) => {
@@ -77,10 +80,12 @@ const getAllChaptersOfProgramById = (programId) => {
 
 const createChapterToProgramById = (programId, chapterPath) => {
   const index = programsDB.findIndex(program => program.id === programId);
-
   if (index !== -1) {
+    let chaptersLength = chaptersControllers.getChaptersByProgram(programId);
+    chaptersLength =chaptersLength.length;
+    
     const newChapter = {
-      chapter_num: chapters.length === undefined || !chapters.length ? 1 : chapters.length + 1,
+      chapter_num: chaptersLength+1,
       url: chapterPath
     }
 
@@ -90,6 +95,14 @@ const createChapterToProgramById = (programId, chapterPath) => {
 
   return false;
 }
+
+//Specific chapter
+const getAChapterByIdWhitProgramId=(chapterId)=>{
+  const response = chaptersControllers.getChapterById(chapterId);
+  
+  return response.length? response[0]:false;
+}
+
 
 module.exports = {
   getAllPrograms,

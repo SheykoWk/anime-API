@@ -1,64 +1,50 @@
 const multer = require('multer')
 const path = require('path')
 
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, path.resolve('uploads/covers'))
-    },
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + '-' + file.originalname)
-    }
-})
-
-const upload = multer({storage})
-
-module.exports = { upload }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-const updateCover = () => {
+const uploadCoverUser =()=>{
     const storage = multer.diskStorage({
         destination: (req, file, cb) => {
-            cb(null, path.resolve('uploads/covers'))
+            cb(null, path.resolve('upload/covers/'))
         },
         filename: (req, file, cb) => {
             cb(null, Date.now() + '-' + file.originalname)
         }
     })
-    
-    const upload = multer({storage})
-    return upload
+    const upload = multer({ storage });
+    return upload;
+
+
 }
-const updateChapter = () => {
-    const storage = multer.diskStorage({
+    
+const uploadCoverProgram = () => {
+    const storageMediaCovers = multer.diskStorage({
         destination: (req, file, cb) => {
-            cb(null, path.resolve('uploads/chapters'))
+            cb(null, path.resolve('media/covers/'))
         },
         filename: (req, file, cb) => {
             cb(null, Date.now() + '-' + file.originalname)
         }
     })
-    
-    const upload = multer({storage})
-    return upload
+    const upload = multer({ storage:storageMediaCovers });
+    return upload;
 }
+
+const uploadChapter = () => {
+    const storageMediaChapters = multer.diskStorage({
+        destination: (req, file, cb) => {
+            cb(null, path.resolve('media/chapters/'))
+        },
+        filename: (req, file, cb) => {
+            cb(null, Date.now() + '-' + file.originalname)
+        }
+    })
+    const upload = multer({ storage:storageMediaChapters });    
+    return upload;
+
+}
+
 module.exports = {
-    updateChapter,
-    updateCover
+    uploadCoverUser,
+    uploadCoverProgram,
+    uploadChapter
 }
