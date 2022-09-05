@@ -7,8 +7,8 @@ const getChaptersByProgram = (programID) => {
   return data;
 };
 
-const getChapterById = (id) => {
-  const data = chaptersDB.filter((chapter) => chapter.id === id);
+const getChapterById = (program_id, chapter_id) => {
+  const data = chaptersDB.filter((chapter) => chapter.id === chapter_id && chapter.program_id === program_id);
   return data;
 };
 
@@ -46,6 +46,14 @@ const editChapter = (id, data) => {
   }
   return false
 };
+
+module.exports = {
+  getChapterById,
+  getChaptersByProgram,
+  createChapter,
+  deleteChapter,
+  editChapter
+}
 
 
 
