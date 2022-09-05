@@ -32,3 +32,18 @@
 - /api/v1/auth/password-recovery
 - - POST 
 - - PATCH
+
+1. /api/v1/programs
+    -GET() C H R
+    -POST() C H R
+2. /api/v1/programs/:program_id
+    -GET() C H R
+    -PATCH() C H R
+    -DELETE() C H R
+3. /api/v1/programs/:program_id/chapters
+    -GET() C H R
+    -POST() C H R
+4. /api/v1/programs/:program_id/chapters/:chapter_id  
+    - GET()C H R 
+    - PATCH()C H R
+    - DELETE()C H R
