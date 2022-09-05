@@ -59,3 +59,11 @@ const editProgram = (id, data) => {
   }
   return false;
 };
+
+module.exports = {
+  getAllPrograms,
+  getProgramById,
+  createProgram,
+  deleteProgram,
+  editProgram
+}
