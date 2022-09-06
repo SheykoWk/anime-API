@@ -8,16 +8,21 @@ const getChaptersByProgram = (programID) => {
 };
 
 const getChapterById = (id) => {
-  const data = chaptersDB.filter((chapter) => chapter.id === id);
+  const data = chaptersDB.filter((chapter) => {
+    if(chapter.id === id) {
+      return chapter
+    }
+  });
+  console.log(data)
   return data;
 };
 
-const createChapter = (data, program_id) => {
+const createChapter = (data, program_id, chapterURL) => {
   const newChapter = {
     id: uuid.v4(),
     program_id,
     chapter_num: data.chapter_num,
-    url: data.url,
+    url: chapterURL,
   };
   chaptersDB.push(newChapter);
   return newChapter;
@@ -26,7 +31,7 @@ const createChapter = (data, program_id) => {
 const deleteChapter = (id) => {
   const index = chaptersDB.findIndex((chapter) => chapter.id === id);
   if (index !== -1) {
-    chaptersDB.slice(index, 1);
+    chaptersDB.splice(index, 1);
     return true;
   }
   return false;
@@ -47,7 +52,13 @@ const editChapter = (id, data) => {
   return false
 };
 
-
+module.exports = {
+  getChapterById,
+  getChaptersByProgram,
+  createChapter,
+  deleteChapter,
+  editChapter
+}
 
 
 

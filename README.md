@@ -29,6 +29,23 @@
 - /api/v1/auth/register
 - - POST
 
-- /api/v1/auth/password-recovery
-- - POST 
-- - PATCH
+- /api/v1/programs
+- - GET 
+- - POST
+
+- /api/v1/programs/:program_id
+- - GET
+- - PUT
+- - DELETE
+
+- /api/v1/programs/:program_id/cover
+- - POST
+
+- /api/v1/programs/:program_id/chapters
+- - GET 
+- - POST
+
+- /api/v1/programs/:program_id/chapters/:chapter_id
+- - GET
+- - PUT
+- - DELETE
