@@ -2,7 +2,7 @@ const userControllers = require("./users.controllers");
 
 const getAll = (req, res) => {
   const data = userControllers.getAllUsers();
-  res.status(200).json({ items: data.length, users: data });
+  return res.status(200).json({ items: data.length, users: data });
 };
 
 const getById = (req, res) => {
@@ -16,36 +16,6 @@ const getById = (req, res) => {
     res.status(404).json({ message: `El usuario con el id ${id} no existe` });
   }
 };
-/*
-{
-    id: 2,
-    first_name: 'Sahid',
-    last_name: 'Kick',
-    email: 'sahid.kick@academlo.com,
-    password: 'root',
-    phone: '1234567890'
-    birthday_date: '22/10/2000',
-    rol: "normal", 
-    profile_image: "",
-    country: 'mexico'
-    is_active: true,
-    verified: false, 
-  }*/
-/*
-{
-    id: 2,
-    firstName: 'Sahid',
-    lastName: 'Kick',
-    email: 'sahid.kick@academlo.com,
-    password: 'root',
-    phone: '1234567890'
-    birthdayDate: '22/10/2000',
-    rol: "normal", 
-    profileImage: "",
-    country: 'mexico'
-    is_active: true,
-    verified: false, 
-  }*/
 
 const register = (req, res) => {
   const data = req.body;
