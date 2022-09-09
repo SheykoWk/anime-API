@@ -9,7 +9,7 @@ const getChaptersByProgram = (programID) => {
 
 const getChapterById = (id) => {
   const data = chaptersDB.filter((chapter) => chapter.id === id);
-  return data;
+  return data.length ? data[0] : null;
 };
 
 const createChapter = (data, program_id) => {
@@ -47,12 +47,23 @@ const editChapter = (id, data) => {
   return false
 };
 
+const editChapterVideo = (chapterId, videoUrl) => {
+  const index = chaptersDB.findIndex(chapter => chapter.id === chapterId)
+  if(index !== -1){
+    chaptersDB[index].url = videoUrl
+    return chaptersDB[index]
+  }
+  return false
+}
+
+
 module.exports = {
   getChaptersByProgram,
   getChapterById,
   createChapter,
   deleteChapter,
-  editChapter
+  editChapter,
+  editChapterVideo
 }
 
 

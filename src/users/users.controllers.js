@@ -19,7 +19,7 @@ const userDB = [{
             "first_name": "Alvaro",
             "last_name": "Japa Salazar",
             "email": "alvaro@gmail.com",
-            "password": "$2b$10$eE7zFDHsxEGyyt1lDMebperw8exuqLNbdfPvFshSVVMjcp12yW.OG",
+            "password": "$2b$10$TNGcRFonQH98rVqFaBVfpOEEv2Xcu5ej14tWqKim3z3L6Tr.ZIaqC",
             "phone": "993340954",
             "birthday_date": "14/02/1998",
             "rol": "normal",
