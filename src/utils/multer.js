@@ -1,44 +1,13 @@
 const multer = require('multer')
 const path = require('path')
 
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, path.resolve('uploads/covers'))
-    },
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + '-' + file.originalname)
-    }
-})
-
-const upload = multer({storage})
-
-module.exports = { upload }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 const updateCover = () => {
     const storage = multer.diskStorage({
         destination: (req, file, cb) => {
-            cb(null, path.resolve('uploads/covers'))
+            cb(null, path.resolve('uploads/anime/covers'))
         },
         filename: (req, file, cb) => {
-            cb(null, Date.now() + '-' + file.originalname)
+            cb(null, file.originalname)
         }
     })
     
@@ -48,10 +17,10 @@ const updateCover = () => {
 const updateChapter = () => {
     const storage = multer.diskStorage({
         destination: (req, file, cb) => {
-            cb(null, path.resolve('uploads/chapters'))
+            cb(null, path.resolve('uploads/anime/chapters'))
         },
         filename: (req, file, cb) => {
-            cb(null, Date.now() + '-' + file.originalname)
+            cb(null, file.originalname)
         }
     })
     

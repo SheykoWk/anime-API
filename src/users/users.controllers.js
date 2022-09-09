@@ -14,7 +14,20 @@ const userDB = [{
   "country": "mexico",
   "is_active": true,
   "verified": false
-}];
+},{
+            "id": "35cc9937-3c28-4427-a53a-b073615ac290",
+            "first_name": "Alvaro",
+            "last_name": "Japa Salazar",
+            "email": "alvaro@gmail.com",
+            "password": "$2b$10$TNGcRFonQH98rVqFaBVfpOEEv2Xcu5ej14tWqKim3z3L6Tr.ZIaqC",
+            "phone": "993340954",
+            "birthday_date": "14/02/1998",
+            "rol": "normal",
+            "profile_image": "",
+            "country": "peru",
+            "is_active": true,
+            "verified": false
+        }];
 
 const getAllUsers = () => {
   return userDB;
