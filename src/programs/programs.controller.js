@@ -21,13 +21,16 @@ const getProgramById = (id) => {
   return data;
 };
 
-const createProgram = (data, program_id) => {
+const createProgram = (data, coverPath) => {
+
+  const cover = data.cover? data.cover : coverPath
+
   const newProgram = {
     id: uuid.v4(),
     title: data.title,
     description: data.description,
     seasons: data.seasons,
-    cover: data.cover,
+    cover: cover,
     categories: data.categories,
   };
   programsDB.push(newProgram);
@@ -37,20 +40,22 @@ const createProgram = (data, program_id) => {
 const deleteProgram = (id) => {
   const index = programsDB.findIndex((program) => program.id === id);
   if (index !== -1) {
-    programsDB.slice(index, 1);
+    programsDB.splice(index, 1);
     return true;
   }
   return false;
 };
 
-const editProgram = (id, data) => {
+const editProgram = (id, data, coverPath) => {
   const index = programsDB.findIndex((program) => program.id === id);
+  const cover = data.cover? data.cover : coverPath
+
   const editedProgram = {
     id: id,
     title: data.title ? data.title : programsDB[index].title,
     description: data.description ? data.description : programsDB[index].description,
     seasons: data.seasons ? data.seasons : programsDB[index].seasons,
-    cover: data.cover ? data.cover : programsDB[index].cover,
+    cover: cover ? cover : programsDB[index].cover,
     categories: data.categories ? data.categories : programsDB[index].categories,
   };
   if (index !== -1) {
@@ -59,3 +64,12 @@ const editProgram = (id, data) => {
   }
   return false;
 };
+
+
+module.exports = {
+  getAllPrograms,
+  getProgramById,
+  createProgram,
+  deleteProgram,
+  editProgram
+}
