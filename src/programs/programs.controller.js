@@ -3,12 +3,12 @@ const uuid = require('uuid')
 const programsDB = [
   {
     id: "88ebed0b-8095-4190-adde-d1165ca48815",
-    title: "Boku no hero academia",
+    title: "Mr.Robot",
     description:
-      "Las personas no nacen igual. El protagonista de esta historia es uno de esos casos raros que nacen sin superpoderes, pero esto no le impedirá perseguir su sueño: ser un gran héroe como el legendario All-Might. Para convertirse en el héroe que quiere ser, se apuntará a una de las academias de héroes más prestigiosas del país: Yueiko. Con la ayuda de su ídolo, All-Might, ¿podrá convertirse en un verdadero héroe?",
+      "Socially inept Elliot Alderson works at cyber security company Allsafe. At night, he hacks social media, personal information, and bank records, including those of his co-workers, therapist, and a drug dealer. Elliot stops a DDoS attack against Allsafe's biggest client, E Corp. He identifies a file labeled fsociety00.dat and a text file asking him not to destroy malware he finds hidden on E Corp's server. Mr. Robot, the mysterious leader of the hacker group fsociety, contacts Elliot on the subway. Fsociety invites Elliot to join them in starting a digital revolution; they plan to delete all debt records held by E Corp. He is intrigued and eventually agrees. As his first collaborative act with fsociety, Elliot provides the FBI with an encrypted file falsely implicating Terry Colby, E Corp's own chief technology officer (CTO) as the orchestrator of the attack.",
     seasons: 4,
-    cover: "localhost:8000/uploads/animes/bnha-cover.jpg",
-    categories: ["Accion", "Comedia", "Escolares", "Shounen", "Superpoderes"],
+    cover: "localhost:8000/uploads/series/mrRobot-cover.jpg",
+    categories: ["Drama", "Psychological Thriller", "Tecno-thriller"]
   },
 ];
 
@@ -18,10 +18,10 @@ const getAllPrograms = () => {
 
 const getProgramById = (id) => {
   const data = programsDB.filter((program) => program.id === id);
-  return data;
+  return data[0];
 };
 
-const createProgram = (data, program_id) => {
+const createProgram = (data) => {
   const newProgram = {
     id: uuid.v4(),
     title: data.title,
@@ -59,3 +59,22 @@ const editProgram = (id, data) => {
   }
   return false;
 };
+
+const editCover = (urlFile, programID) => {
+    const index = programsDB.findIndex(program => program.id === programID)
+    if (index !== -1) {
+      programsDB[index].cover = urlFile;
+      return programsDB[index];
+    }
+    return false;
+}
+
+
+module.exports = {
+  getAllPrograms,
+  getProgramById,
+  createProgram,
+  deleteProgram,
+  editProgram,
+  editCover
+}
