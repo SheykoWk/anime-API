@@ -18,25 +18,19 @@ const getById = (req, res) => {
     };
 
 const create = (req, res) => {
-        const data = req.body;
-        if (!data) {
-          return res.status(400).json({ message: "Missing Data" });
-        } else if (
+  const data = req.body;
+  if (!data) {
+    return res.status(400).json({ message: "Missing Data" });
+  } else if (
+          !data.id ||
           !data.title ||
           !data.description ||
           !data.seasons ||
-          !data.covers ||
+          !data.cover ||
           !data.categories 
         ) {
           return res.status(400).json({
-            message: "All fields must be completed",
-            fields: {
-              title: "string",
-              description: "string",
-              seasons: 4,
-              cover: "example.com/img/example.png",
-              categories: "string"
-            },
+            message: "All fields must be completed"
           });
         } else {
           const response = programsControllers.createProgram(data);
@@ -91,10 +85,18 @@ const remove = (req, res) => {
       }
     };
 
+  const addCover = (req, res) => {
+      const programID = req.params.id;
+      const imgPath = req.hostname + ':8000' + '/api/v1/uploads/' + req.file.filename;
+      const data = programsControllers.editCover(imgPath, programID);
+      res.status(200).json(data)
+  }
+
     module.exports = {
         getAll,
         getById,
         create,
         edit,
-        remove
+        remove,
+        addCover
     }

@@ -22,17 +22,18 @@ const getChapById = (req, res) => {
     };
 
 const createChap = (req, res) => {
-    const data = req.body;
-    if(!data){
-      res.status(400).json({message: 'Missing data'})
-    } else if (
-        data.program_id ||
-        data.chapter_num ||
-        data.url
+  const data = req.body;
+  if (!data) {
+    return res.status(400).json({ message: "Missing Data" });
+  } else if (
+        !data.id ||
+        !data.program_id ||
+        !data.chapter_num ||
+        !data.url
     ){
       res.status(400).json({message: 'All fields must be completed'})
     } else {
-      const response = chaptersControllers.createChapter
+      const response = chaptersControllers.createChapter(data)
       return res
             .status(201)
             .json({
@@ -79,10 +80,18 @@ const removeChap = (req, res) => {
       }
     };
 
+const addChapterImg = (req, res) => {
+    const chapterID = req.params.id;
+    const imgPath = req.hostname + ':8000' + '/api/v1/uploads/' + req.file.filename;
+    const data = chaptersControllers.editChapterImg(imgPath, chapterID);
+      res.status(200).json(data)
+  }
+
 module.exports = {
     getAllChaps,
     getChapById,
     createChap,
     editChap,
-    removeChap
+    removeChap, 
+    addChapterImg
 }

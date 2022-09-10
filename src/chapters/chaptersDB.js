@@ -14,7 +14,7 @@ const chaptersDB = [
       id: "0e18b6f3-fe8e-4a37-a28e-7a1248cc8642",
       program_id: "88ebed0b-8095-4190-adde-d1165ca48815",
       chapter_num: 3,
-      url: "localhost:8000/uploads/series/chapters/mrRobot-1-3.mp4"
+      url: "localhost:8000/uploads/series/chapters/mrRobot-1-3.jpg"
     },
     {
       id: "1710acbf-e68e-40a9-ae7a-96717d23b928",
