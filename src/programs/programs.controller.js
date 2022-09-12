@@ -1,4 +1,5 @@
-const uuid = require('uuid')
+const uuid = require('uuid');
+const removeFile = require('../utils/removeFile.js');
 
 const programsDB = [
   {
@@ -7,7 +8,7 @@ const programsDB = [
     description:
       "Las personas no nacen igual. El protagonista de esta historia es uno de esos casos raros que nacen sin superpoderes, pero esto no le impedirá perseguir su sueño: ser un gran héroe como el legendario All-Might. Para convertirse en el héroe que quiere ser, se apuntará a una de las academias de héroes más prestigiosas del país: Yueiko. Con la ayuda de su ídolo, All-Might, ¿podrá convertirse en un verdadero héroe?",
     seasons: 4,
-    cover: "localhost:8000/uploads/animes/bnha-cover.jpg",
+    cover: "localhost:8000/uploads/media/covers/bnha-cover-1.jpg",
     categories: ["Accion", "Comedia", "Escolares", "Shounen", "Superpoderes"],
   },
 ];
@@ -21,7 +22,7 @@ const getProgramById = (id) => {
   return data;
 };
 
-const createProgram = (data, program_id) => {
+const createProgram = (data) => {
   const newProgram = {
     id: uuid.v4(),
     title: data.title,
@@ -34,16 +35,21 @@ const createProgram = (data, program_id) => {
   return newProgram;
 };
 
-const deleteProgram = (id) => {
+const deleteProgram = async (id) => {
   const index = programsDB.findIndex((program) => program.id === id);
   if (index !== -1) {
-    programsDB.slice(index, 1);
-    return true;
+    const response = await removeFile(programsDB[index].cover)
+    if(response){
+      programsDB.splice(index, 1);
+      return true;
+    }else {
+      return "Not Found";
+    }
   }
   return false;
 };
 
-const editProgram = (id, data) => {
+const editProgram = async (id, data) => {
   const index = programsDB.findIndex((program) => program.id === id);
   const editedProgram = {
     id: id,
@@ -54,8 +60,22 @@ const editProgram = (id, data) => {
     categories: data.categories ? data.categories : programsDB[index].categories,
   };
   if (index !== -1) {
-    programsDB[index] = editedProgram;
-    return programsDB[index];
+    const response = await removeFile(programsDB[index].cover)
+    if(response){
+      programsDB[index] = editedProgram;
+      return programsDB[index];
+    }else {
+      return "Not Found";
+    }
   }
   return false;
 };
+
+module.exports = {
+  getAllPrograms,
+  getProgramById,
+  createProgram,
+  deleteProgram,
+  editProgram,
+  programsDB
+}
