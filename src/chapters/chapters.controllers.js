@@ -2,6 +2,11 @@ const uuid = require("uuid");
 
 const chaptersDB = require("./chaptersDB");
 
+//C.1:OBTENER TODOS LOS CAPITULOS
+const getAllChapters=()=>{
+  return chaptersDB
+}
+
 const getChaptersByProgram = (programID) => {
   const data = chaptersDB.filter((chapter) => chapter.program_id === programID);
   return data;
@@ -46,6 +51,11 @@ const editChapter = (id, data) => {
   }
   return false
 };
+
+
+module.exports={
+  getAllChapters
+}
 
 
 

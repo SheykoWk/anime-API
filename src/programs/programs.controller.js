@@ -11,7 +11,7 @@ const programsDB = [
     categories: ["Accion", "Comedia", "Escolares", "Shounen", "Superpoderes"],
   },
 ];
-
+//C.1:OBTENER TODOS LOS PROGRAMAS
 const getAllPrograms = () => {
   return programsDB;
 };
@@ -59,3 +59,8 @@ const editProgram = (id, data) => {
   }
   return false;
 };
+
+
+module.exports={
+getAllPrograms
+}
