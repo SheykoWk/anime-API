@@ -7,26 +7,39 @@ const getAllChapters=()=>{
   return chaptersDB
 }
 
+//c.3.A:obtener todos los capitulos del programa
 const getChaptersByProgram = (programID) => {
   const data = chaptersDB.filter((chapter) => chapter.program_id === programID);
-  return data;
+  // return data;
+  return  data.length ? data : false
 };
 
-const getChapterById = (id) => {
-  const data = chaptersDB.filter((chapter) => chapter.id === id);
-  return data;
-};
-
+//C.3.B:AREGAR CAPITULOS AL PROGRAMA
 const createChapter = (data, program_id) => {
   const newChapter = {
     id: uuid.v4(),
-    program_id,
+    // program_id,
+    program_id:program_id,
     chapter_num: data.chapter_num,
     url: data.url,
   };
   chaptersDB.push(newChapter);
   return newChapter;
 };
+
+
+//C.4.A:OBTENER UN CAPITULO ESPECIFICO
+// const getChapterById = (id) => {
+//   const data = chaptersDB.filter((chapter) => chapter.id === id);
+//   return data;
+// };
+
+const getChapterById = (program_id,id) => {
+  const dataProgram=getChaptersByProgram(program_id)
+  const data = dataProgram.filter((chapter) => chapter.id === id);
+  return data;
+};
+
 
 const deleteChapter = (id) => {
   const index = chaptersDB.findIndex((chapter) => chapter.id === id);
@@ -54,7 +67,10 @@ const editChapter = (id, data) => {
 
 
 module.exports={
-  getAllChapters
+  getAllChapters,
+  getChaptersByProgram,
+  createChapter,
+  getChapterById
 }
 
 
