@@ -18,16 +18,16 @@ const getAllPrograms = () => {
 
 const getProgramById = (id) => {
   const data = programsDB.filter((program) => program.id === id);
-  return data;
+  return data[0]? data[0] : null;
 };
 
-const createProgram = (data, program_id) => {
+const createProgram = (data, coverUrl) => {
   const newProgram = {
     id: uuid.v4(),
     title: data.title,
     description: data.description,
     seasons: data.seasons,
-    cover: data.cover,
+    cover: coverUrl? coverUrl : '',
     categories: data.categories,
   };
   programsDB.push(newProgram);
@@ -36,8 +36,9 @@ const createProgram = (data, program_id) => {
 
 const deleteProgram = (id) => {
   const index = programsDB.findIndex((program) => program.id === id);
+  console.log(index)
   if (index !== -1) {
-    programsDB.slice(index, 1);
+    programsDB.splice(index, 1);
     return true;
   }
   return false;
@@ -50,12 +51,33 @@ const editProgram = (id, data) => {
     title: data.title ? data.title : programsDB[index].title,
     description: data.description ? data.description : programsDB[index].description,
     seasons: data.seasons ? data.seasons : programsDB[index].seasons,
-    cover: data.cover ? data.cover : programsDB[index].cover,
+    cover:data.cover? data.cover: programsDB[index].cover,
     categories: data.categories ? data.categories : programsDB[index].categories,
   };
   if (index !== -1) {
     programsDB[index] = editedProgram;
     return programsDB[index];
+  }else{
+    return false
   }
-  return false;
 };
+
+const editCoverPrograms = (id, coverUrl) =>{
+  const index = programsDB.findIndex(program => program.id === id)
+  if(index !== -1){
+    programsDB[index].cover = coverUrl
+    return programsDB[index]
+  }else{
+    return false
+  }
+}
+
+module.exports = {
+  getAllPrograms,
+  getProgramById,
+  createProgram,
+  deleteProgram,
+  editProgram,
+  editCoverPrograms,
+  programsDB
+}
