@@ -30,18 +30,18 @@ const getUserById = (id) => {
 
 const createUser = (data) => {
   const newUser = {
-    id: uuid.v4(), //obligatorio y unico
-    first_name: data.first_name, //obligatorio
-    last_name: data.last_name, //obligatorio
-    email: data.email, //obligatorio y unico
-    password: hashPassword(data.password), //obligatorio
-    phone: data.phone ? data.phone : "", //unico   
-    birthday_date: data.birthday_date, //obligatorio
-    rol: "normal", //obligatorio y por defecto "normal"
+    id: uuid.v4(), //mandatory and unique
+    first_name: data.first_name, //mandatory
+    last_name: data.last_name, //mandatory
+    email: data.email, //mandatory and unique
+    password: hashPassword(data.password), //mandatory
+    phone: data.phone ? data.phone : "", //unique   
+    birthday_date: data.birthday_date, //mandatory
+    rol: "normal", //mandatory and by default "normal"
     profile_image: data.profile_image ? data.profile_image : "",
-    country: data.country, //obligatorio
-    is_active: true, //obligatorio y por defecto true
-    verified: false, //obligatorio y por defecto false
+    country: data.country, //mandatory
+    is_active: true, //mandatory and by default true
+    verified: false, //mandatory and by default false
   };
   userDB.push(newUser);
   return newUser;
@@ -56,7 +56,7 @@ const editUser = (id, data, userRol) => {
       last_name: data.last_name,
       email: data.email,
       password: userDB[index].password,
-      phone: data.phone, //unico
+      phone: data.phone, //unique
       birthday_date: data.birthday_date,
       rol: userRol === 'admin' ? data.rol : 'normal',
       profile_image: data.profile_image,

@@ -13,7 +13,7 @@ const getById = (req, res) => {
   if (data) {
     res.status(200).json(data);
   } else {
-    res.status(404).json({ message: `El usuario con el id ${id} no existe` });
+    res.status(404).json({ message: `The user with the id ${id} doesn't exist` });
   }
 };
 /*
@@ -64,7 +64,7 @@ const register = (req, res) => {
       fields: {
         first_name: "string",
         last_name: "string",
-        email: "examle@examle.com",
+        email: "example@example.com",
         password: "string",
         birthday_date: "DD/MM/YYYY",
         country: "string",
@@ -151,7 +151,7 @@ const editMyUser = (req, res) => {
       fields: {
         first_name: "string",
         last_name: "string",
-        email: "examle@examle.com",
+        email: "example@example.com",
         phone: "+521231231230",
         profile_image: "example.com/img/example.png",
         birthday_date: "DD/MM/YYYY",

@@ -14,26 +14,28 @@
 - /api/v1/auth/password-recovery
 - /api/v1/auth/verify-account
 
+--- 
+
 - /api/v1/users
-- - GET 
+    - GET 
 
 - /api/v1/users/:id
-- - GET  
-- - PUT (ADMIN)
-- - DELETE (ADMIN)
+    - GET  
+    - PUT (ADMIN)
+    - DELETE (ADMIN)
 
 - /api/v1/users/me
-- - GET
-- - PUT
-- - PATCH
-- - DELETE
+    - GET
+    - PUT
+    - PATCH
+    - DELETE
 
 - /api/v1/auth/login
-- - POST
+    - POST
 
 - /api/v1/auth/register
-- - POST
+    - POST
 
 - /api/v1/auth/password-recovery
-- - POST 
-- - PATCH
+    - POST 
+    - PATCH
