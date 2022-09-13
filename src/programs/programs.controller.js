@@ -1,4 +1,4 @@
-const uuid = require('uuid')
+const uuid = require("uuid");
 
 const programsDB = [
   {
@@ -9,6 +9,15 @@ const programsDB = [
     seasons: 4,
     cover: "localhost:8000/uploads/animes/bnha-cover.jpg",
     categories: ["Accion", "Comedia", "Escolares", "Shounen", "Superpoderes"],
+  },
+  {
+    id: "66b52965-4a22-4d12-9798-fde1b177a46a",
+    title: "Bastard",
+    description:
+      "Han pasado 15 años desde aquel momento donde Dark Schneider junto a sus compañeros Gara, Karls y Arshes Nei trataran de conquistar el mundo, pero a pesar de haberse apoderado de casi todo el mundo, fueron derrotados por los guerreros y sacerdotes del reino de Metallicana y Dark Schneider fue encerrado por un sacerdote de nombre Geo en el cuerpo de un recién nacido de nombre Lushe Renren",
+    seasons: 1,
+    cover: "localhost:8000/uploads/animes/bnha-cover.jpg",
+    categories: ["Accion", "Comedia", "Magia", "Shounen", "Superpoderes"],
   },
 ];
 
@@ -21,7 +30,7 @@ const getProgramById = (id) => {
   return data;
 };
 
-const createProgram = (data, program_id) => {
+const createProgram = (data) => {
   const newProgram = {
     id: uuid.v4(),
     title: data.title,
@@ -48,14 +57,36 @@ const editProgram = (id, data) => {
   const editedProgram = {
     id: id,
     title: data.title ? data.title : programsDB[index].title,
-    description: data.description ? data.description : programsDB[index].description,
+    description: data.description
+      ? data.description
+      : programsDB[index].description,
     seasons: data.seasons ? data.seasons : programsDB[index].seasons,
     cover: data.cover ? data.cover : programsDB[index].cover,
-    categories: data.categories ? data.categories : programsDB[index].categories,
+    categories: data.categories
+      ? data.categories
+      : programsDB[index].categories,
   };
   if (index !== -1) {
     programsDB[index] = editedProgram;
     return programsDB[index];
   }
   return false;
+};
+
+const editImgCover = (programId, imgUrl) => {
+  const index = programsDB.findIndex((user) => program.id === programId);
+  if (index !== -1) {
+    programsDB[index].cover = imgUrl;
+    return programsDB[index];
+  }
+  return false;
+};
+
+module.exports = {
+  getAllPrograms,
+  getProgramById,
+  createProgram,
+  deleteProgram,
+  editProgram,
+  editImgCover,
 };

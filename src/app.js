@@ -1,29 +1,43 @@
-//* Dependencias
+//* Dependencies
 const express = require("express");
-const passport = require("passport");
-require("./middleware/auth.middleware")(passport);
+const path = require("path");
 
-//*Archivos de rutas
-const userRouter = require("./users/users.router").router;
-const authRouter = require("./auth/auth.router").router;
+//*Route files
+const programRouter = require("./programs/programs.router").router;
+const chapterRouter = require("./chapters/chapters.router").router;
 
-//* Configuraciones iniciales
+//* Initial settings
 const app = express();
 
-//? Esta configuracion es para habilitar el req.body
+//? This config is to enable the req.body
 app.use(express.json());
-
 
 app.get("/", (req, res) => {
   res.status(200).json({ message: "All ok!" });
 });
-app.use("/api/v1/users", userRouter);
-app.use("/api/v1/auth", authRouter);
+
+app.use("/api/v1/programs", programRouter);
+app.use("/api/v1/programs/:program_id/chapters", chapterRouter);
+
+app.get("/uploads/animes/:imgName", (req, res) => {
+  const imgName = req.params.imgName;
+  res
+    .status(200)
+    .sendFile(path.resolve("uploads/media/covers") + "/" + imgName);
+});
+
+app.get("/uploads/anime/chapters/:chapter", (req, res) => {
+  const chapterName = req.params.chapter;
+  console.log(path.resolve("uploads/media/episodes/"));
+  res
+    .status(200)
+    .sendFile(path.resolve("uploads/media/episodes/") + "/" + chapterName);
+});
 
 app.listen(8000, () => {
   console.log("Server started at port 8000");
 });
 
-exports.default = app
-exports.app = app
-module.exports = app
+exports.default = app;
+exports.app = app;
+module.exports = app;
