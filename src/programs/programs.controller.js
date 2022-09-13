@@ -10,18 +10,25 @@ const programsDB = [
     cover: "localhost:8000/uploads/animes/bnha-cover.jpg",
     categories: ["Accion", "Comedia", "Escolares", "Shounen", "Superpoderes"],
   },
+  {
+    id: "4038d488-03f1-4466-807d-933eb6825ba7",
+    title: "YUGIO",
+    description:
+      "Anime de cartas",
+    seasons: 4,
+    cover: "localhost:8000/uploads/animes/bnha-cover.jpg",
+    categories: ["Accion", "Comedia", "Escolares", "Shounen", "Superpoderes"],
+  },
 ];
-
+//D.1_A:OBTENER TODOS LOS PROGRAMAS
 const getAllPrograms = () => {
   return programsDB;
 };
 
-const getProgramById = (id) => {
-  const data = programsDB.filter((program) => program.id === id);
-  return data;
-};
 
-const createProgram = (data, program_id) => {
+//D.1_B:CREAR PROGRAMAS
+// const createProgram = (data, program_id) => {
+const createProgram = (data) => {
   const newProgram = {
     id: uuid.v4(),
     title: data.title,
@@ -34,15 +41,14 @@ const createProgram = (data, program_id) => {
   return newProgram;
 };
 
-const deleteProgram = (id) => {
-  const index = programsDB.findIndex((program) => program.id === id);
-  if (index !== -1) {
-    programsDB.slice(index, 1);
-    return true;
-  }
-  return false;
+
+//D.2_A:OBTENER UN PRORAMA EN ESPECIFICO
+const getProgramById = (id) => {
+  const data = programsDB.filter((program) => program.id === id);
+  return data.length?data[0]:null;
 };
 
+//D.2_B:EDITAR UN PROGRAMA
 const editProgram = (id, data) => {
   const index = programsDB.findIndex((program) => program.id === id);
   const editedProgram = {
@@ -59,3 +65,43 @@ const editProgram = (id, data) => {
   }
   return false;
 };
+
+//C.2_C:ELIMINAR UN PROGRAMA
+const deleteProgram = (id) => {
+  const index = programsDB.findIndex((program) => program.id === id);
+  if (index !== -1) {
+    programsDB.splice(index, 1);
+    return true;
+  }
+  return false;
+};
+
+
+//MULTER:POSTEAR LA IMAGEN DEL PROGRAMA
+const editProgramCover = (program_id,coverUrl) => {
+  const dataProgram=getProgramById(program_id)
+  if(dataProgram){
+    const index = programsDB.findIndex(user => user.id === program_id)
+    if(index !== -1){
+      programsDB[index].cover = coverUrl
+      return programsDB[index]
+    }
+    return false
+  }
+  else{
+    return false
+  }
+ 
+}
+
+
+
+
+module.exports={
+getAllPrograms,
+createProgram,
+getProgramById,
+editProgram,
+deleteProgram,
+editProgramCover
+}
