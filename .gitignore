@@ -1,3 +1,9 @@
 node_modules/
 .env
 media/*
+
+media/*
+media/*.mp4
+media/*.png
+media/*.jpg
+media/*.webp
