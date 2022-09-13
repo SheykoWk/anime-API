@@ -51,7 +51,7 @@ const create = (req, res) => {
 
 //D.2_A:OBTENER UN PRORAMA EN ESPECIFICO
 const getById = (req, res) => {
-  const id = req.params.id;
+  const id = req.params.program_id;
   const data = programControllers.getProgramById(id);
   if (data) {
     res.status(200).json(data);
@@ -62,7 +62,7 @@ const getById = (req, res) => {
 
 //D.2_B:EDITAR UN PROGRAMA
 const edit = (req, res) => {
-  const id = req.params.id;
+  const id = req.params.program_id;
   const data = req.body;
 
 
@@ -115,25 +115,42 @@ const edit = (req, res) => {
 
 //C.2_C:ELIMINAR UN PROGRAMA
 const remove=(req,res)=>{
-    const id=req.params.id
+    const id=req.params.program_id
     const data=programControllers.deleteProgram(id)
 
     if (data) {
         return res.status(204).json();
       } else {
-        return res.status(400).json({ message: "Id del prorama invalido" });
+        return res.status(400).json({ message: "Id del programa invalido" });
       }
 }
 
 
 
+////MULTER:POSTEAR LA IMAGEN DEL PROGRAMA
+
+const postProgramCover = (req, res) => {
+    const programId = req.params.program_id;
+    const coverUrl = req.hostname + ':8000' + '/api/v1/media/cover/' + req.file.filename 
+  
+    const data = programControllers.editProgramCover(programId,coverUrl)
+
+    if (data) {
+     return res.status(200).json(data)
+    } else {
+      return res.status(400).json({ message: "Id del programa invalido" });
+    }
+    
+  
+  }
 
 module.exports = {
   getAll,
   create,
   getById,
   edit,
-  remove
+  remove,
+  postProgramCover
   
   
 };
