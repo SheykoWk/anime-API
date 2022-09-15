@@ -1,9 +1,12 @@
 const uuid = require("uuid");
-
 const chaptersDB = require("./chaptersDB");
+const { programsDB } = require('../programs/programs.controller')
 
-const getChaptersByProgram = (programID) => {
-  const data = chaptersDB.filter((chapter) => chapter.program_id === programID);
+const getChaptersByProgram = (programID, idprograms) => {
+  const filterPrograms = programsDB.filter((programs) => programs.id === idprograms)
+  const filterChapters = chaptersDB.filter((chapter) => chapter.program_id === programID);
+  const data = Object.assign(filterPrograms, filterChapters)
+
   return data;
 };
 
@@ -12,12 +15,12 @@ const getChapterById = (id) => {
   return data;
 };
 
-const createChapter = (data, program_id) => {
+const createChapter = (data, program_id, urlCover) => {
   const newChapter = {
     id: uuid.v4(),
-    program_id,
+    program_id: program_id,
     chapter_num: data.chapter_num,
-    url: data.url,
+    url: urlCover,
   };
   chaptersDB.push(newChapter);
   return newChapter;
@@ -48,7 +51,12 @@ const editChapter = (id, data) => {
 };
 
 
-
-
+module.exports = {
+  getChaptersByProgram,
+  getChapterById,
+  createChapter,
+  deleteChapter,
+  editChapter
+}
 
 
