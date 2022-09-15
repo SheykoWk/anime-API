@@ -1,12 +1,13 @@
 const { getUserById } = require("../users/users.controllers");
+const config = require('../config')
 
 const JwtStrategy = require("passport-jwt").Strategy,
   ExtractJwt = require("passport-jwt").ExtractJwt;
 
 module.exports = (passport) => {
   const opts = {
-    jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('jwt'),
-    secretOrKey: "academlo", // debe estar en una variable de entorno
+    jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('JWT'),
+    secretOrKey: config.jwtSecret
   };
   passport.use(
     new JwtStrategy(opts, (decoded, done) => {
