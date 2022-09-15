@@ -32,3 +32,31 @@
 - /api/v1/auth/password-recovery
 - - POST 
 - - PATCH
+
+# Programs
+
+- /api/v1/programs
+
+-  /
+- - GET
+- - POST
+
+- /:id
+- - GET
+- - PUT
+- - DELETE
+
+- /:id/upload
+- - POST
+
+- /:program_id/chapter
+- - GET
+- - POST
+
+- /:program_id/chapters/:chapter_id
+- - GET
+- - DELETE
+- - PUT
+
+- /:program_id/chapters/:chapter_id/upload
+- - POST
