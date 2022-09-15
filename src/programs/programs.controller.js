@@ -9,7 +9,15 @@ const programsDB = [
     seasons: 4,
     cover: "localhost:8000/uploads/animes/bnha-cover.jpg",
     categories: ["Accion", "Comedia", "Escolares", "Shounen", "Superpoderes"],
-  },
+  },  {
+    id: "1",
+    title: "examplle",
+    description:
+      "Lexampledasdasdcacascas?",
+    seasons: 4,
+    cover: "localhost:8000/uploads/animes/bnha-cover.jpg",
+    categories: ["Accion", "Comedia", "Escolares", "Shounen", "Superpoderes"],
+  }
 ];
 
 const getAllPrograms = () => {
@@ -18,16 +26,16 @@ const getAllPrograms = () => {
 
 const getProgramById = (id) => {
   const data = programsDB.filter((program) => program.id === id);
-  return data;
+  return data[0] ? data[0] : false;
 };
 
-const createProgram = (data, program_id) => {
+const createProgram = (data) => {
   const newProgram = {
     id: uuid.v4(),
     title: data.title,
     description: data.description,
     seasons: data.seasons,
-    cover: data.cover,
+    cover: data.cover ? data.cover : null,
     categories: data.categories,
   };
   programsDB.push(newProgram);
@@ -37,25 +45,46 @@ const createProgram = (data, program_id) => {
 const deleteProgram = (id) => {
   const index = programsDB.findIndex((program) => program.id === id);
   if (index !== -1) {
-    programsDB.slice(index, 1);
+    programsDB.splice(index, 1);
     return true;
+  } else {
+    return false;
   }
-  return false;
 };
 
-const editProgram = (id, data) => {
+const editProgram = (data, id) => {
   const index = programsDB.findIndex((program) => program.id === id);
-  const editedProgram = {
-    id: id,
-    title: data.title ? data.title : programsDB[index].title,
-    description: data.description ? data.description : programsDB[index].description,
-    seasons: data.seasons ? data.seasons : programsDB[index].seasons,
-    cover: data.cover ? data.cover : programsDB[index].cover,
-    categories: data.categories ? data.categories : programsDB[index].categories,
-  };
   if (index !== -1) {
-    programsDB[index] = editedProgram;
+    programsDB[index] = {
+      id: id,
+      title: data.title,
+      description: data.description,
+      seasons: data.seasons,
+      cover: data.cover ? data.cover : null,
+      categories: data.categories,
+    };
     return programsDB[index];
+  } else {
+    return false;
   }
-  return false;
 };
+
+const editProfileImg = (id, imgUrl) => {
+  const index = programsDB.findIndex((program) => program.id === id)
+  console.log(id)
+  if(index !== -1){
+    programsDB[index].cover = imgUrl
+    return programsDB[index]
+  } else {
+    return false
+  }
+}
+
+module.exports = {
+  getAllPrograms,
+  getProgramById,
+  createProgram,
+  deleteProgram,
+  editProgram,
+  editProfileImg
+}
